@@ -7,9 +7,9 @@ namespace CourierAppAPI.dto
 {
     public class AllUserDto
     {
-        public string NameOfCourier { get; set; }
-        public string UnitOrBranch { get; set; }
-        public string PhoneNumber { get; set; }
-        public string EmailAddress { get; set; }
+        public string Courier_Name { get; set; }
+        public string Units_Branches { get; set; }
+        public double Phone_Numbers { get; set; }
+        public string Email_Address { get; set; }
     }
 }
