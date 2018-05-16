@@ -74,6 +74,22 @@ namespace CourierAppAPI.services
 
         }
 
+        public string GetAllRequest(GetRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered GetAllRequest function");
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetAllRequest function entered an exception");
+                Logger.Error(ex);
+                return null;
+            }
+        }
+
         public ResponseDto RegisterUser()
         {
             try

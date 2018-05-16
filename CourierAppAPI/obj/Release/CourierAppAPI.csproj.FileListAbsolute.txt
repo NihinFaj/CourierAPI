@@ -70,3 +70,4 @@ C:\Users\nihin.fajemilehin\Documents\Visual Studio 2013\Projects\CourierAppAPI\C
 C:\Users\nihin.fajemilehin\Documents\Visual Studio 2013\Projects\CourierAppAPI\CourierAppAPI\bin\zh-Hant\System.Spatial.resources.dll
 C:\Users\nihin.fajemilehin\Documents\Visual Studio 2013\Projects\CourierAppAPI\CourierAppAPI\obj\Release\CourierAppAPI.dll
 C:\Users\nihin.fajemilehin\Documents\Visual Studio 2013\Projects\CourierAppAPI\CourierAppAPI\obj\Release\CourierAppAPI.pdb
+C:\Users\nihin.fajemilehin\Documents\Visual Studio 2013\Projects\CourierAppAPI\CourierAppAPI\obj\Release\CourierAppAPI.csprojResolveAssemblyReference.cache

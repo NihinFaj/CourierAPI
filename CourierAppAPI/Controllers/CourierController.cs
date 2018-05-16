@@ -39,6 +39,26 @@ namespace CourierAppAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, resp, "application/json");
         }
 
+        [ActionName("get-all-request")]
+        [HttpPost]
+        public HttpResponseMessage GetRequest(GetRequestDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorList = (from item in ModelState.Values
+                                 from error in item.Errors
+                                 select error.ErrorMessage).ToArray();
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = JsonConvert.SerializeObject(errorList) };
+            }
+            var resp = courierService.GetAllRequest(dto);
+
+            if (resp == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = "" };
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, resp, "application/json");
+        }
+
         [ActionName("register-user")]
         [HttpPost]
         public HttpResponseMessage RegisterUser()
