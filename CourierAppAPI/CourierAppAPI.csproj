@@ -169,6 +169,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="dto\AllUserDto.cs" />
+    <Compile Include="dto\GetAllRequestForUserDto.cs" />
     <Compile Include="dto\GetNameDto.cs" />
     <Compile Include="dto\GetRequestDto.cs" />
     <Compile Include="dto\ResponseDto.cs" />

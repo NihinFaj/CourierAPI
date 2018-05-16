@@ -80,7 +80,26 @@ namespace CourierAppAPI.services
             {
                 Logger.Info("Just entered GetAllRequest function");
 
-                return null;
+                var ResponseDto = new ResponseDto();
+
+                Logger.Info("About to call GetAllRequestForUser function");
+
+                var resp = GetAllRequestForUser();
+
+                if (resp == null)
+                {
+                    ResponseDto.Code = "1001";
+                    ResponseDto.Message = "";
+                    ResponseDto.Error = "Unable to process request, please try again later.";
+                    return JsonConvert.SerializeObject(ResponseDto);
+                }
+
+                Logger.Info("Response from GetAllRequestForUser function is: " + JsonConvert.SerializeObject(resp));
+
+                ResponseDto.Code = "1000";
+                ResponseDto.Message = JsonConvert.SerializeObject(resp);
+                ResponseDto.Error = "";
+                return JsonConvert.SerializeObject(ResponseDto);
             }
             catch (Exception ex)
             {
@@ -88,6 +107,27 @@ namespace CourierAppAPI.services
                 Logger.Error(ex);
                 return null;
             }
+        }
+
+        public IEnumerable<GetAllRequestForUserDto> GetAllRequestForUser()
+        {
+            try
+            {
+                Logger.Info("Just entered GetAllRequestForUser function");
+
+                using (var db = new EOneContext())
+                {
+                    var list = db.ExecuteQuery<GetAllRequestForUserDto>("select * from Courier_Tracker", new Object[] { }).ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetAllRequestForUser function entered an exception");
+                Logger.Error(ex);
+                return null;
+            }
+
         }
 
         public ResponseDto RegisterUser()
