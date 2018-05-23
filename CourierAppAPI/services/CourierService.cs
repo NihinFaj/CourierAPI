@@ -118,7 +118,7 @@ namespace CourierAppAPI.services
 
                 using (var db = new EOneContext())
                 {
-                    var list = db.ExecuteQuery<GetAllRequestForUserDto>("select * from Courier_Tracker", new Object[] { }).ToList();
+                    var list = db.ExecuteQuery<GetAllRequestForUserDto>("select * from Courier_Tracker where Dispatch_Rider_Name is Null and Dispatch_Rider_Pickup_DateTime is Null ", new Object[] { }).ToList();
                     return list;
                 }
             }
