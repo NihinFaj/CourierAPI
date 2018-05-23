@@ -75,27 +75,27 @@ namespace CourierAppAPI.services
 
         }
 
-        public ResponseDto GetAllRequest(GetRiderRequestDto dto)
+        public ResponseDto GetAllRiderRequests(GetRiderRequestDto dto)
         {
             try
             {
-                Logger.Info("Just entered GetAllRequest function");
+                Logger.Info("Just entered GetAllRiderRequests function");
 
                 var ResponseDto = new ResponseDto();
 
-                Logger.Info("About to call GetAllRequestForUser function");
+                Logger.Info("About to call GetRiderRequestList function");
 
-                var resp = GetAllRequestForUser();
+                var resp = GetRiderRequestList(dto);
 
                 if (resp == null)
                 {
                     ResponseDto.StatusCode = 1001;
                     ResponseDto.Message = "";
-                    ResponseDto.Error = "Unable to process request, please try again later.";
+                    ResponseDto.Error = "Unable to get requests, please try again later.";
                     return ResponseDto;
                 }
 
-                Logger.Info("Response from GetAllRequestForUser function is: " + JsonConvert.SerializeObject(resp));
+                Logger.Info("Response from GetRiderRequestList function is: " + JsonConvert.SerializeObject(resp));
 
                 ResponseDto.StatusCode = 1000;
                 ResponseDto.Message = JsonConvert.SerializeObject(resp);
@@ -104,17 +104,17 @@ namespace CourierAppAPI.services
             }
             catch (Exception ex)
             {
-                Logger.Error("GetAllRequest function entered an exception");
+                Logger.Error("GetAllRiderRequests function entered an exception");
                 Logger.Error(ex);
                 return null;
             }
         }
 
-        public IEnumerable<GetAllRequestForUserDto> GetAllRequestForUser()
+        public IEnumerable<GetAllRequestForUserDto> GetRiderRequestList(GetRiderRequestDto dto)
         {
             try
             {
-                Logger.Info("Just entered GetAllRequestForUser function");
+                Logger.Info("Just entered GetRiderRequestList function");
 
                 using (var db = new EOneContext())
                 {
@@ -124,7 +124,64 @@ namespace CourierAppAPI.services
             }
             catch (Exception ex)
             {
-                Logger.Error("GetAllRequestForUser function entered an exception");
+                Logger.Error("GetRiderRequestList function entered an exception");
+                Logger.Error(ex);
+                return null;
+            }
+
+        }
+
+        public ResponseDto GetAllMailroomRequests(GetMailroomRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered GetAllMailroomRequests function");
+
+                var ResponseDto = new ResponseDto();
+
+                Logger.Info("About to call GetMailroomRequestList function");
+
+                var resp = GetMailroomRequestList(dto);
+
+                if (resp == null)
+                {
+                    ResponseDto.StatusCode = 1001;
+                    ResponseDto.Message = "";
+                    ResponseDto.Error = "Unable to process request, please try again later.";
+                    return ResponseDto;
+                }
+
+                Logger.Info("Response from GetMailroomRequestList function is: " + JsonConvert.SerializeObject(resp));
+
+                ResponseDto.StatusCode = 1000;
+                ResponseDto.Message = JsonConvert.SerializeObject(resp);
+                ResponseDto.Error = "";
+                return ResponseDto;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetMailroomRequestList function entered an exception");
+                Logger.Error(ex);
+                return null;
+            }
+
+        }
+
+        public IEnumerable<GetAllRequestForUserDto> GetMailroomRequestList(GetMailroomRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered GetMailroomRequestList function");
+
+                using (var db = new EOneContext())
+                {
+                    var list = db.ExecuteQuery<GetAllRequestForUserDto>("select * from Courier_Tracker", new Object[] { }).ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("GetMailroomRequestList function entered an exception");
                 Logger.Error(ex);
                 return null;
             }
@@ -214,35 +271,6 @@ namespace CourierAppAPI.services
                 Logger.Error(ex);
                 return -1;
             }
-        }
-
-
-        public ResponseDto GetAllRiderRequests(GetRiderRequestDto dto)
-        {
-            try
-            {
-                Logger.Info("Just got into GetAllRiderRequests function");
-
-                var ResponseDto = new ResponseDto();
-
-                ResponseDto.StatusCode = 1000;
-                ResponseDto.Error = "";
-                ResponseDto.Message = "";
-                return ResponseDto;
-
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                Logger.Info("GetAllRiderRequests function entered an exception");
-                return null;
-            }
-        }
-
-        public string GetAllMailroomRequests(GetMailroomRequestDto dto)
-        {
-            return null;
-
         }
     }
 }
