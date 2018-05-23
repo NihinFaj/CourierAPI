@@ -41,7 +41,7 @@ namespace CourierAppAPI.Controllers
 
         [ActionName("register-user")]
         [HttpPost]
-        public HttpResponseMessage RegisterUser()
+        public HttpResponseMessage RegisterUser(RegisterUserDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace CourierAppAPI.Controllers
                                  select error.ErrorMessage).ToArray();
                 return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = JsonConvert.SerializeObject(errorList) };
             }
-            var resp = courierService.RegisterUser();
+            var resp = courierService.RegisterUser(dto);
 
             if (resp == null)
             {
@@ -59,9 +59,9 @@ namespace CourierAppAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, resp, "application/json");
         }
 
-        [ActionName("get-all-requests")]
+        [ActionName("get-all-rider-requests")]
         [HttpPost]
-        public HttpResponseMessage GetRequest(GetRequestDto dto)
+        public HttpResponseMessage GetRiderRequests(GetRiderRequestDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +70,27 @@ namespace CourierAppAPI.Controllers
                                  select error.ErrorMessage).ToArray();
                 return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = JsonConvert.SerializeObject(errorList) };
             }
-            var resp = courierService.GetAllRequest(dto);
+            var resp = courierService.GetAllRiderRequests(dto);
+
+            if (resp == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = "" };
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, resp, "application/json");
+        }
+
+        [ActionName("get-all-mailroom-requests")]
+        [HttpPost]
+        public HttpResponseMessage GetRequest(GetMailroomRequestDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorList = (from item in ModelState.Values
+                                 from error in item.Errors
+                                 select error.ErrorMessage).ToArray();
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = JsonConvert.SerializeObject(errorList) };
+            }
+            var resp = courierService.GetAllMailroomRequests(dto);
 
             if (resp == null)
             {
