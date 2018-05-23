@@ -272,5 +272,89 @@ namespace CourierAppAPI.services
                 return -1;
             }
         }
+
+        public ResponseDto SubmitRiderPickUp(SubmitRiderPickupRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered SubmitRiderPickUp Function " + dto.RiderName);
+                var ResponseDto = new ResponseDto();
+
+                Logger.Info("About to call SubmitRiderPickUpOnDB Function " + dto.RiderName);
+                var resp = SubmitRiderPickUpOnDB(dto);
+
+                if (resp > 0)
+                {
+                    ResponseDto.StatusCode = 1000;
+                    ResponseDto.Error = "";
+                    ResponseDto.Message = "Rider pickup request was submitted successfully";
+                    return ResponseDto;
+                }
+                else
+                {
+                    ResponseDto.StatusCode = 1001;
+                    ResponseDto.Error = "Sorry, Rider pickup request could not be submitted at the moment";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                Logger.Info("SubmitRiderPickUp function entered an exception " + dto.RiderName);
+                return null;
+            }
+        }
+
+        public Int64 SubmitRiderPickUpOnDB(SubmitRiderPickupRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered SubmitRiderPickUpOnDB function " + dto.RiderName);
+
+                var dateRegistered = DateTime.Now.ToString();
+
+                using (var db = new EOneContext())
+                {
+                    Int64 a = 0;
+                    Logger.Info("***About to call stored procedure dbo.submit_rider_pickup_request, with values Email Address " + dto.RiderName + " QRCode " + dto.QrCode);
+                    var cmd = db.Database.Connection.CreateCommand();
+                    cmd.CommandText = "dbo.submit_rider_pickup_request";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@qrCode", dto.QrCode.Trim()));
+                    cmd.Parameters.Add(new SqlParameter("@riderName", dto.RiderName.Trim()));
+
+                    try
+                    {
+                        Logger.Info("Opening the connection, for rider" + dto.RiderName);
+
+                        ((IObjectContextAdapter)db).ObjectContext.Connection.Open();
+
+                        a = Convert.ToInt64(cmd.ExecuteNonQuery());
+                        Logger.Info(dto.RiderName + " Rider pickup request was successfully submitted, Number of Rows Affected is " + a);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Info("Entered an exeption code block when calling stored procedure dbo.submit_rider_pickup_request " + dto.RiderName);
+                        Logger.Error(ex);
+                        return -1;
+                    }
+                    finally
+                    {
+                        Logger.Info("Closing the connection to the EOne DB after insertion " + dto.RiderName);
+                        db.Database.Connection.Close();
+                    }
+                    Logger.Info("About to return Id afer submitting Rider pickup request " + dto.RiderName);
+
+                    return a;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("SubmitRiderPickUpOnDB function entered an exception " + dto.RiderName);
+                Logger.Error(ex);
+                return -1;
+            }
+        }
     }
 }

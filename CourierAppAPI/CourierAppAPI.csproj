@@ -181,6 +181,7 @@
     <Compile Include="dto\RegisterUserDto.cs" />
     <Compile Include="dto\Response.cs" />
     <Compile Include="dto\ResponseDto.cs" />
+    <Compile Include="dto\SubmitRiderPickupRequestDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
