@@ -356,5 +356,89 @@ namespace CourierAppAPI.services
                 return -1;
             }
         }
+
+        public ResponseDto SubmitMailroomPickUp(SubmitMailroomPickupRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered SubmitMailroomPickUp Function " + dto.MailRoomName);
+                var ResponseDto = new ResponseDto();
+
+                Logger.Info("About to call SubmitMailroomPickUpOnDB Function " + dto.MailRoomName);
+                var resp = SubmitMailroomPickUpOnDB(dto);
+
+                if (resp > 0)
+                {
+                    ResponseDto.StatusCode = 1000;
+                    ResponseDto.Error = "";
+                    ResponseDto.Message = "Mailroom pickup request was submitted successfully";
+                    return ResponseDto;
+                }
+                else
+                {
+                    ResponseDto.StatusCode = 1001;
+                    ResponseDto.Error = "Sorry, Mailroom pickup request could not be submitted at the moment";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                Logger.Info("SubmitMailroomPickUp function entered an exception " + dto.MailRoomName);
+                return null;
+            }
+        }
+
+        public Int64 SubmitMailroomPickUpOnDB(SubmitMailroomPickupRequestDto dto)
+        {
+            try
+            {
+                Logger.Info("Just entered SubmitMailroomPickUpOnDB function " + dto.MailRoomName);
+
+                var dateRegistered = DateTime.Now.ToString();
+
+                using (var db = new EOneContext())
+                {
+                    Int64 a = 0;
+                    Logger.Info("***About to call stored procedure dbo.submit_mailroom_pickup_request, with values Email Address " + dto.MailRoomName + " QRCode " + dto.QrCode);
+                    var cmd = db.Database.Connection.CreateCommand();
+                    cmd.CommandText = "dbo.submit_mailroom_pickup_request";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@qrCode", dto.QrCode.Trim()));
+                    cmd.Parameters.Add(new SqlParameter("@mailRoomName", dto.MailRoomName.Trim()));
+
+                    try
+                    {
+                        Logger.Info("Opening the connection, for mailroom officer" + dto.MailRoomName);
+
+                        ((IObjectContextAdapter)db).ObjectContext.Connection.Open();
+
+                        a = Convert.ToInt64(cmd.ExecuteNonQuery());
+                        Logger.Info(dto.MailRoomName + " Mailroom pickup request was successfully submitted, Number of Rows Affected is " + a);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Info("Entered an exeption code block when calling stored procedure dbo.submit_mailroom_pickup_request " + dto.MailRoomName);
+                        Logger.Error(ex);
+                        return -1;
+                    }
+                    finally
+                    {
+                        Logger.Info("Closing the connection to the EOne DB after insertion " + dto.MailRoomName);
+                        db.Database.Connection.Close();
+                    }
+                    Logger.Info("About to return Id afer submitting Mailroom officer pickup request " + dto.MailRoomName);
+
+                    return a;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("SubmitMailroomPickUpOnDB function entered an exception " + dto.MailRoomName);
+                Logger.Error(ex);
+                return -1;
+            }
+        }
     }
 }

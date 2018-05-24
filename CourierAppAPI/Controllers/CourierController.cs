@@ -118,5 +118,25 @@ namespace CourierAppAPI.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, resp, "application/json");
         }
+
+        [ActionName("submit-mailroom-pickup-request")]
+        [HttpPost]
+        public HttpResponseMessage SubmitMailroomPickupRequest(SubmitMailroomPickupRequestDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorList = (from item in ModelState.Values
+                                 from error in item.Errors
+                                 select error.ErrorMessage).ToArray();
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = JsonConvert.SerializeObject(errorList) };
+            }
+            var resp = courierService.SubmitMailroomPickUp(dto);
+
+            if (resp == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = "" };
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, resp, "application/json");
+        }
     }
 }
