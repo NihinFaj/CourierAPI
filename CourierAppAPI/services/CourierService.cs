@@ -62,7 +62,7 @@ namespace CourierAppAPI.services
 
                 using (var db = new EOneContext())
                 {
-                    var list = db.ExecuteQuery<AllUserDto>("select Courier_Name, Units_Branches, Phone_Numbers, Email_Address from Dispatch_Riders_Lagos", new Object[] { }).ToList();
+                    var list = db.ExecuteQuery<AllUserDto>("select Courier_Name, Units_Branches, Phone_Numbers, Email_Address,Status, Branch_Code from Dispatch_Riders_Lagos", new Object[] { }).ToList();
                     return list;
                 }
             }
