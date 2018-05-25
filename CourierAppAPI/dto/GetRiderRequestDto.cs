@@ -7,7 +7,7 @@ namespace CourierAppAPI.dto
 {
     public class GetRiderRequestDto
     {
-        public string Name { get; set; }
-        public int Role { get; set; }
+        public string BranchCode { get; set; }
+        public int RiderEmail { get; set; }
     }
 }

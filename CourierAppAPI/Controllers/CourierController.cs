@@ -7,17 +7,22 @@ using System.Web.Http;
 using CourierAppAPI.services;
 using CourierAppAPI.dto;
 using Newtonsoft.Json;
+using log4net;
+using System.Reflection;
 
 namespace CourierAppAPI.Controllers
 {
     public class CourierController : ApiController
     {
         private CourierService courierService;
+        protected ILog Logger;
 
         public CourierController()
         {
             courierService = new CourierService();
+            Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         }
+
 
         [ActionName("get-all-names")]
         [HttpPost]
@@ -70,6 +75,11 @@ namespace CourierAppAPI.Controllers
                                  select error.ErrorMessage).ToArray();
                 return new HttpResponseMessage(HttpStatusCode.BadRequest) { RequestMessage = Request, ReasonPhrase = JsonConvert.SerializeObject(errorList) };
             }
+
+            Logger.Info("Values sent from the App are below");
+            Logger.Info("Email Address: " + dto.RiderEmail);
+            Logger.Info("Branch Code is: " + dto.BranchCode);
+
             var resp = courierService.GetAllRiderRequests(dto);
 
             if (resp == null)
