@@ -83,6 +83,21 @@ namespace CourierAppAPI.services
 
                 var ResponseDto = new ResponseDto();
 
+                if (string.IsNullOrEmpty(dto.RiderEmail))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "Email Address cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+                if (string.IsNullOrEmpty(dto.BranchCode))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "Branch code cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+
                 Logger.Info("About to call GetRiderRequestList function");
 
                 var resp = GetRiderRequestList(dto);
@@ -114,7 +129,7 @@ namespace CourierAppAPI.services
         {
             try
             {
-                Logger.Info("Just entered GetRiderRequestList function");
+                Logger.Info("Just entered GetRiderRequestList function" + dto.RiderEmail);
 
                 using (var db = new EOneContext())
                 {
@@ -124,7 +139,7 @@ namespace CourierAppAPI.services
             }
             catch (Exception ex)
             {
-                Logger.Error("GetRiderRequestList function entered an exception");
+                Logger.Error("GetRiderRequestList function entered an exception" + dto.RiderEmail);
                 Logger.Error(ex);
                 return null;
             }
@@ -194,6 +209,28 @@ namespace CourierAppAPI.services
             {
                 Logger.Info("Just entered RegisterUser Function " + dto.Email);
                 var ResponseDto = new ResponseDto();
+
+                if (string.IsNullOrEmpty(dto.DeviceId))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "Device ID cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+                if (string.IsNullOrEmpty(dto.Email))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "User email cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+                if (string.IsNullOrEmpty(dto.Status))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "Registration status cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
 
                 Logger.Info("About to call RegisterCurrentUser Function " + dto.Email);
                 var resp = RegisterCurrentUser(dto);
@@ -280,6 +317,21 @@ namespace CourierAppAPI.services
                 Logger.Info("Just entered SubmitRiderPickUp Function " + dto.RiderName);
                 var ResponseDto = new ResponseDto();
 
+                if (string.IsNullOrEmpty(dto.QrCode))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "QRCode value cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+                if (string.IsNullOrEmpty(dto.RiderName))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "Rider name cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+
                 Logger.Info("About to call SubmitRiderPickUpOnDB Function " + dto.RiderName);
                 var resp = SubmitRiderPickUpOnDB(dto);
 
@@ -363,6 +415,21 @@ namespace CourierAppAPI.services
             {
                 Logger.Info("Just entered SubmitMailroomPickUp Function " + dto.MailRoomName);
                 var ResponseDto = new ResponseDto();
+
+                if (string.IsNullOrEmpty(dto.QrCode))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "QRCode value cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
+                if (string.IsNullOrEmpty(dto.MailRoomName))
+                {
+                    ResponseDto.StatusCode = 1006;
+                    ResponseDto.Error = "Mailroom officer name cannot be empty";
+                    ResponseDto.Message = "";
+                    return ResponseDto;
+                }
 
                 Logger.Info("About to call SubmitMailroomPickUpOnDB Function " + dto.MailRoomName);
                 var resp = SubmitMailroomPickUpOnDB(dto);
