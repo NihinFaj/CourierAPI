@@ -8,6 +8,6 @@ namespace CourierAppAPI.dto
     public class GetRiderRequestDto
     {
         public string BranchCode { get; set; }
-        public int RiderEmail { get; set; }
+        public string RiderEmail { get; set; }
     }
 }
