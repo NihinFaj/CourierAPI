@@ -11,5 +11,7 @@ namespace CourierAppAPI.dto
         public string Units_Branches { get; set; }
         public double Phone_Numbers { get; set; }
         public string Email_Address { get; set; }
+        public string Status { get; set; }
+        public string Branch_Code { get; set; }
     }
 }

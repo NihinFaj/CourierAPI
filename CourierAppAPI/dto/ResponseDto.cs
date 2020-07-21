@@ -9,6 +9,6 @@ namespace CourierAppAPI.dto
     {
         public string Message { get; set; }
         public string Error { get; set; }
-        public string Code { get; set; }
+        public int StatusCode { get; set; }
     }
 }
